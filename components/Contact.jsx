@@ -53,12 +53,12 @@ export default function Contact() {
 
           {/* Facebook */}
           <a
-            href="https://www.facebook.com/karim.masmoudi"
+            href="https://www.facebook.com/kimou.mas"
             target="_blank"
             rel="noopener noreferrer"
             className="icon-btn"
-            aria-label="Facebook profile"
-            title="Facebook profile"
+            aria-label="Facebook profile (@kimou.mas)"
+            title="Facebook: kimou.mas"
           >
             <svg viewBox="0 0 24 24" width="22" height="22" className="fill-current" aria-hidden="true">
               <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.14 8.44 9.94v-7.03H7.9v-2.9h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.9h-2.34v7.03C18.34 21.2 22 17.06 22 12.06Z"/>
@@ -67,26 +67,26 @@ export default function Contact() {
 
           {/* Instagram */}
           <a
-            href="https://www.instagram.com/karim.masmoudi"
+            href="https://www.instagram.com/karim._.masmoudi"
             target="_blank"
             rel="noopener noreferrer"
             className="icon-btn"
-            aria-label="Instagram profile"
-            title="Instagram profile"
+            aria-label="Instagram profile (@karim._.masmoudi)"
+            title="Instagram: @karim._.masmoudi"
           >
             <svg viewBox="0 0 24 24" width="22" height="22" className="fill-current" aria-hidden="true">
-              <path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.06 1.8.25 2.22.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.36 1.05.42 2.22.07 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.06 1.17-.25 1.8-.42 2.22-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.17-1.05.36-2.22.42-1.25.07-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.06-1.8-.25-2.22-.42a4.34 4.34 0 0 1-1.38-.9 4.34 4.34 0 0 1-.9-1.38c-.17-.42-.36-1.05-.42-2.22C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.06-1.17.25-1.8.42-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.05-.36 2.22-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.15 0-3.52 0-4.76.07-.97.05-1.5.21-1.85.35-.46.18-.8.4-1.15.75-.35.35-.57.69-.75 1.15-.14.35-.3.88-.35 1.85-.07 1.24-.07 1.61-.07 4.76s0 3.52.07 4.76c.05.97.21 1.5.35 1.85.18.46.4.8.75 1.15.35.35.69.57 1.15.75.35.14.88.3 1.85.35 1.24.07 1.61.07 4.76.07s3.52 0 4.76-.07c.97-.05 1.5-.21 1.85-.35.46-.18.8-.4 1.15-.75.35-.35.57-.69.75-1.15.14-.35.3-.88.35-1.85.07-1.24.07-1.61.07-4.76s0-3.52-.07-4.76c-.05-.97-.21-1.5-.35-1.85-.18-.46-.4-.8-.75-1.15-.35-.35-.69-.57-1.15-.75-.35-.14-.88-.3-1.85-.35-1.24-.07-1.61-.07-4.76-.07Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm5.6-2.2a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+              <path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.06 1.8.25 2.22.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.36 1.05.42 2.22.07 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.06 1.17-.25 1.8-.42 2.22-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.17-1.05.36-2.22.42-1.25.07-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.06-1.8-.25-2.22-.42a4.34 4.34 0 0 1-1.38-.9 4.34 4.34 0 0 1-.9-1.38c-.17-.42-.36-1.05-.42-2.22C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.06-1.17.25-1.8.42-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.05-.36 2.22-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.15 0-3.52 0-4.76.07-.97.05-1.5.21-1.85.35-.46.18-.8.4-1.15.75-.35.35-.57.69-.75 1.15-.14.35-.3.88-.35 1.85-.07 1.24-.07 1.61-.07 4.76s0 3.52.07 4.76c.05 1.97.42 2.47.75 3 .35.35.69.57 1.15.75.35.14.88.3 1.85.35 1.24.07 1.61.07 4.76.07s3.52 0 4.76-.07c.97-.05 1.5-.21 1.85-.35.46-.18.8-.4 1.15-.75.35-.35.57-.69.75-1.15.14-.35.3-.88.35-1.85.07-1.24.07-1.61.07-4.76s0-3.52-.07-4.76c-.05-.97-.21-1.5-.35-1.85-.18-.46-.4-.8-.75-1.15-.35-.35-.69-.57-1.15-.75-.35-.14-.88-.3-1.85-.35-1.24-.07-1.61-.07-4.76-.07Zm0 3.6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Zm0 1.8a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Zm5.6-2.2a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
             </svg>
           </a>
 
           {/* Twitter/X */}
           <a
-            href="https://twitter.com/karim_masmoudi"
+            href="https://twitter.com/karim0masmoudi"
             target="_blank"
             rel="noopener noreferrer"
             className="icon-btn"
-            aria-label="Twitter profile"
-            title="Twitter profile"
+            aria-label="Twitter profile (@karim0masmoudi)"
+            title="Twitter: @karim0masmoudi"
           >
             <svg viewBox="0 0 24 24" width="22" height="22" className="fill-current" aria-hidden="true">
               <path d="M18.244 2H21l-6.56 7.49L22 22h-6.222l-4.86-6.34L5.2 22H2l7.12-8.12L2 2h6.35l4.49 5.91L18.244 2Zm-2.18 18h2.04L8.04 4H6.1l9.964 16Z"/>
@@ -95,17 +95,25 @@ export default function Contact() {
 
           {/* Linktree */}
           <a
-            href="https://linktr.ee/karimmasmoudi"
+            href="https://linktr.ee/karim.masmoudi"
             target="_blank"
             rel="noopener noreferrer"
             className="icon-btn"
             aria-label="Linktree"
-            title="Linktree"
+            title="Linktree: linktr.ee/karim.masmoudi"
           >
             <svg viewBox="0 0 24 24" width="22" height="22" className="fill-current" aria-hidden="true">
               <path d="M10.9 2.6a1.5 1.5 0 0 1 2.2 0l3.2 3.3a1.5 1.5 0 1 1-2.2 2.1l-.9-.9V9h3.6a1.5 1.5 0 0 1 0 3H13v8.5a1.5 1.5 0 0 1-3 0V12H6.5a1.5 1.5 0 0 1 0-3H10V7.1l-.9.9a1.5 1.5 0 1 1-2.2-2.1l3.2-3.3Z"/>
             </svg>
           </a>
+        </div>
+
+        {/* Optional labels beneath icons */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-6 text-xs dark:text-neutral-400 text-neutral-600">
+          <span>@karim0masmoudi</span>
+          <span>@karim._.masmoudi</span>
+          <span>kimou.mas</span>
+          <span>linktr.ee/karim.masmoudi</span>
         </div>
       </div>
     </section>
