@@ -19,7 +19,7 @@ const projects = [
     repoUrl: 'https://github.com/Kernel-Hunter/kernel-experiments',
     liveUrl: null,
     image: '/assets/kernel-experiments.png',
-    alt: 'Laptop user with floating code overlays symbolizing low-level systems development'
+    alt: 'Hands typing on laptop with floating code overlays in a dark environment'
   },
   {
     id: 'smart-mirror-system',
@@ -31,7 +31,7 @@ const projects = [
     repoUrl: null,
     liveUrl: null,
     image: '/assets/smart-mirror.png',
-    alt: 'Interactive smart mirror displaying a web interface within an illuminated frame'
+    alt: 'Interactive smart mirror displaying a web interface with illuminated frame'
   },
   {
     id: 'underground-water-recycling',
