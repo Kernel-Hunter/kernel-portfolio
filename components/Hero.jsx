@@ -9,11 +9,11 @@ export default function Hero() {
         {/* Left: Text */}
         <div className="flex flex-col gap-6 md:pr-6">
           <h2 className="text-4xl md:text-6xl font-bold leading-tight text-center md:text-left">
-            Hi, I’m <span className="gradient-text">Karim</span>.
+            Hi, I’m <span className="gradient-text">Karim Masmoudi</span>.
           </h2>
           <p className="text-lg md:text-xl dark:text-neutral-300 text-neutral-700 text-center md:text-left">
             Software Engineer driven by curiosity and creativity. I’ve built underwater robots, smart IoT devices,
-            and AI-powered systems collaborating with international organizations on cutting-edge projects.
+            and AI-powered systems—collaborating with international organizations on cutting-edge projects.
             Engineering is the fusion of imagination, precision, and purpose.
           </p>
           <div className="flex gap-4 pt-2 justify-center md:justify-start">
@@ -26,12 +26,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right: Smaller Photo */}
+        {/* Right: Photo (smaller) */}
         <div className="w-full">
           <div className="mx-auto max-w-[220px] md:max-w-[260px] lg:max-w-[300px] rounded-2xl overflow-hidden border dark:border-neutral-800 border-neutral-300 bg-neutral-900/40 light:bg-white/70">
             <Image
               src="/assets/karim.jpg"
-              alt="Karim standing in front of a modern architectural structure with international flags"
+              alt="Karim Masmoudi standing in front of a modern architectural structure with international flags"
               width={600}
               height={800}
               className="object-cover w-full h-full"
