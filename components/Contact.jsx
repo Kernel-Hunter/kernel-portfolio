@@ -15,7 +15,6 @@ export default function Contact() {
           <li>Phone: <span className="text-neutral-400">+216 94262521</span></li>
         </ul>
         <p className="text-xs text-neutral-500">
-          (Publishing a phone number may increase spam—consider a business-only number.)
         </p>
       </div>
     </section>
