@@ -5,7 +5,7 @@ import Image from 'next/image';
 export default function Hero() {
   return (
     <section className="py-20">
-      <div className="flex flex-col-reverse items-center gap-10 md:grid md:grid-cols-2 md:items-center">
+      <div className="flex flex-col-reverse items-center gap-10 md:grid md:grid-cols-[1fr_auto] md:items-center">
         {/* Left: Text */}
         <div className="flex flex-col gap-6 md:pr-6">
           <h2 className="text-4xl md:text-6xl font-bold leading-tight text-center md:text-left">
@@ -26,14 +26,14 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right: Photo */}
+        {/* Right: Smaller Photo */}
         <div className="w-full">
-          <div className="mx-auto max-w-xs md:max-w-sm lg:max-w-md rounded-2xl overflow-hidden border dark:border-neutral-800 border-neutral-300 bg-neutral-900/40 light:bg-white/70">
+          <div className="mx-auto max-w-[220px] md:max-w-[260px] lg:max-w-[300px] rounded-2xl overflow-hidden border dark:border-neutral-800 border-neutral-300 bg-neutral-900/40 light:bg-white/70">
             <Image
               src="/assets/karim.jpg"
               alt="Karim standing in front of a modern architectural structure with international flags"
-              width={800}
-              height={1000}
+              width={600}
+              height={800}
               className="object-cover w-full h-full"
               priority
             />
