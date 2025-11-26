@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
+    background: radial-gradient(circle at 30% 20%, #111 0%, #050505 60%);
+    color: #f5f5f5;
+  }
+  ::selection {
+    background: #06b6d4;
+    color: #010101;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  .card {
+    @apply rounded-xl border border-neutral-800 bg-neutral-900/50 backdrop-blur p-5 transition hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-900/30;
+  }
+  .tag {
+    @apply text-xs px-2 py-1 rounded-md bg-neutral-800 text-neutral-200 border border-neutral-700;
+  }
+  .section-title {
+    @apply text-2xl font-semibold mb-8;
+  }
+}
