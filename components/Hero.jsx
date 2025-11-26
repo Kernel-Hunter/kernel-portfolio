@@ -9,7 +9,7 @@ export default function Hero() {
         {/* Left: Text */}
         <div className="flex flex-col gap-6 md:pr-6">
           <h2 className="text-4xl md:text-6xl font-bold leading-tight text-center md:text-left">
-            Hi, I’m <span className="gradient-text">Karim Masmoudi</span>.
+            Hi, I’m <span className="gradient-text">Karim Masmoudi</span>
           </h2>
           <p className="text-lg md:text-xl dark:text-neutral-300 text-neutral-700 text-center md:text-left">
             Software Engineer driven by curiosity and creativity. I’ve built underwater robots, smart IoT devices,
