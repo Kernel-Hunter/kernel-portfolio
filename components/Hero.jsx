@@ -13,7 +13,7 @@ export default function Hero() {
           </h2>
           <p className="text-lg md:text-xl dark:text-neutral-300 text-neutral-700 text-center md:text-left">
             Software Engineer driven by curiosity and creativity. I’ve built underwater robots, smart IoT devices,
-            and AI-powered systems—collaborating with international organizations on cutting-edge projects.
+            and AI-powered systems collaborating with international organizations on cutting-edge projects.
             Engineering is the fusion of imagination, precision, and purpose.
           </p>
           <div className="flex gap-4 pt-2 justify-center md:justify-start">
