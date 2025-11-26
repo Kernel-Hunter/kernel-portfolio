@@ -1,4 +1,5 @@
 import './globals.css';
+import ThemeProvider from '../components/ThemeProvider.jsx';
 import Header from '../components/Header.jsx';
 import Footer from '../components/Footer.jsx';
 
@@ -9,13 +10,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <div className="max-w-6xl mx-auto px-5">
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </div>
+        <ThemeProvider>
+          <div className="max-w-6xl mx-auto px-5">
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
