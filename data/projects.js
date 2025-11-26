@@ -36,6 +36,7 @@ const projects = [
     summary: 'Sustainable agriculture concept: collect, filter, and reuse irrigation water.',
     description: 'Layered underground chambers channel excess irrigation water through natural filtration media before reuse; proposed sensorization and IoT dashboard.',
     technologies: ['Sustainable Design', 'IoT Concept', 'Arduino/ESP32', 'Environmental Engineering'],
+    achievements: ['4th Place – University Innovation Challenge'],
     repoUrl: null,
     liveUrl: null,
     image: '/assets/water-recycling.png'
