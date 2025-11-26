@@ -28,7 +28,7 @@ export default function About() {
             IoT smart interfaces, low-level kernel modules, and AI-driven tooling.
           </p>
           <p className="dark:text-neutral-300 text-neutral-700">
-            I believe impactful engineering is a deliberate blend of imagination, precision, and purpose—
+            I believe impactful engineering is a deliberate blend of imagination, precision, and purpose
             each project an opportunity to turn abstract ideas into resilient, efficient, and meaningful solutions.
           </p>
         </div>
