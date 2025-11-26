@@ -107,14 +107,6 @@ export default function Contact() {
             </svg>
           </a>
         </div>
-
-        {/* Optional labels beneath icons */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-6 text-xs dark:text-neutral-400 text-neutral-600">
-          <span>@karim0masmoudi</span>
-          <span>@karim._.masmoudi</span>
-          <span>kimou.mas</span>
-          <span>linktr.ee/karim.masmoudi</span>
-        </div>
       </div>
     </section>
   );
