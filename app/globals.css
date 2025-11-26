@@ -6,30 +6,38 @@
 :root {
   --bg-dark: radial-gradient(circle at 30% 20%, #111 0%, #050505 60%);
   --bg-light: linear-gradient(to bottom, #fafafa, #e9eef2);
+
   --text-dark: #f5f5f5;
   --text-light: #0f1113;
-  --text-light-secondary: #334155;
-  --text-light-tertiary: #475569;
-  --border-light: #d1d5db;
-  --card-light: #ffffffcc;
+  --text-light-secondary: #334155; /* slate-700-ish */
+  --text-light-tertiary: #475569;   /* slate-600-ish */
+
+  --border-light: #d1d5db; /* gray-300 */
+  --card-light: #ffffffcc; /* translucent white */
   --card-light-hover: #ffffff;
 }
 
+/* Base themes */
 @layer base {
   html { scroll-behavior: smooth; }
+
   body {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
     background: var(--bg-dark);
     color: var(--text-dark);
   }
+
   .light body {
     background: var(--bg-light);
     color: var(--text-light);
   }
+
   ::selection { background: #06b6d4; color: #010101; }
 }
 
+/* Components & utilities */
 @layer components {
+  /* Gradient text heading */
   .gradient-text {
     background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1);
     -webkit-background-clip: text;
@@ -41,15 +49,23 @@
     color: transparent;
   }
 
+  /* Card base */
   .card {
-    @apply relative rounded-xl border border-neutral-800 dark:border-neutral-800 bg-neutral-900/50 dark:bg-neutral-900/40 backdrop-blur p-5 transition-all duration-500;
+    @apply relative rounded-xl border border-neutral-800 dark:border-neutral-800
+           bg-neutral-900/50 dark:bg-neutral-900/40 backdrop-blur p-5 transition-all duration-500;
   }
-  .light .card { background: var(--card-light); border-color: var(--border-light); }
-  .light .card:hover { background: var(--card-light-hover); }
+  .light .card {
+    background: var(--card-light);
+    border-color: var(--border-light);
+  }
+  .light .card:hover {
+    background: var(--card-light-hover);
+  }
 
+  /* Hover animation wrapper (group is added in JSX; do not @apply group here) */
   .card-hover { position: relative; }
 
-  /* IMPORTANT: disable pointer events so links remain clickable */
+  /* Animated gradient border ring using ::after */
   .card-hover::after {
     content: '';
     position: absolute;
@@ -61,7 +77,7 @@
     opacity: 0;
     transition: opacity .4s;
     animation: borderFlow 12s linear infinite;
-    pointer-events: none; /* <- this line makes clicks pass through */
+    pointer-events: none; /* allow clicking underlying links */
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
@@ -69,25 +85,54 @@
             mask-composite: exclude;
   }
 
+  /* Group hover effects (group class is on the card in JSX) */
   .group:hover::after { opacity: 1; }
   .group:hover .lift { transform: translateY(-3px); }
   .lift { transition: transform .4s; }
 
-  .tag { @apply text-xs px-2 py-1 rounded-md bg-neutral-800 text-neutral-200 border border-neutral-700; }
-  .light .tag { background: #e2e8f0; color: #1e293b; border-color: #cbd5e1; }
+  /* Tags/chips */
+  .tag {
+    @apply text-xs px-2 py-1 rounded-md bg-neutral-800 text-neutral-200 border border-neutral-700;
+  }
+  .light .tag {
+    background: #e2e8f0; /* slate-200 */
+    color: #1e293b;      /* slate-800 */
+    border-color: #cbd5e1; /* slate-300 */
+  }
 
+  /* Section titles */
   .section-title { @apply text-2xl font-semibold mb-8; }
   .light .section-title { color: var(--text-light); }
 
+  /* Light-mode text overrides for old neutral classes */
   .light .text-neutral-300 { color: var(--text-light-secondary) !important; }
   .light .text-neutral-400 { color: var(--text-light-tertiary) !important; }
   .light p, .light li { color: var(--text-light-secondary); }
+
+  /* Icon button style for GitHub and external link */
+  .icon-btn {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-md border transition;
+    @apply dark:text-neutral-200 text-neutral-800;
+    @apply dark:border-neutral-700 border-neutral-300;
+    @apply hover:text-cyan-500 dark:hover:text-cyan-400 hover:border-cyan-400;
+    background: transparent;
+  }
 }
 
+/* Keyframes and helper utilities */
 @layer utilities {
   @keyframes borderFlow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+  }
+
+  /* Optional smoother transform utility (used if you prefer CSS-only smoothing) */
+  .smooth-scale {
+    transition: transform 520ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: transform;
+  }
+  .group:hover .smooth-scale {
+    transform: translateY(-3px) scale(1.035);
   }
 }
