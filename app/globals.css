@@ -38,9 +38,12 @@
     @apply bg-white/60 border-neutral-300;
   }
 
-  /* Hover animation wrapper */
+  /* Hover animation wrapper
+     NOTE: Do NOT @apply 'group' here; Tailwind forbids @apply with 'group'.
+     We’ll attach 'group' via JSX className instead. */
   .card-hover {
-    @apply group;
+    /* empty on purpose; acts as a hook for ::after below */
+    position: relative;
   }
 
   /* Animated gradient border ring using ::after */
@@ -84,5 +87,14 @@
 
   .section-title {
     @apply text-2xl font-semibold mb-8;
+  }
+}
+
+/* Keyframes for animated gradient border and content lift */
+@layer utilities {
+  @keyframes borderFlow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 }
