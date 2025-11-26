@@ -1,10 +1,24 @@
+import Image from 'next/image';
 import Tag from './Tag.jsx';
 
 export default function ProjectCard({ project }) {
   return (
     <div className="card flex flex-col gap-3">
-      <div className="aspect-video w-full rounded-md bg-neutral-800 flex items-center justify-center text-neutral-600 text-xs md:text-sm">
-        {project.image ? project.title : 'Image Coming'}
+      <div className="aspect-video w-full rounded-md bg-neutral-800 overflow-hidden">
+        {project.image ? (
+          <Image
+            src={project.image}
+            alt={project.alt || project.title}
+            width={800}
+            height={450}
+            className="object-cover w-full h-full"
+            priority={false}
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-neutral-600 text-xs md:text-sm">
+            Image Coming
+          </div>
+        )}
       </div>
       <h4 className="text-lg font-semibold">{project.title}</h4>
       <p className="text-sm text-neutral-300">{project.summary}</p>
