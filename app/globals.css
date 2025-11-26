@@ -2,51 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base themes */
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
-    background: radial-gradient(circle at 30% 20%, #111 0%, #050505 60%);
-    color: #f5f5f5;
-  }
-  .light body {
-    background: linear-gradient(to bottom, #fafafa, #e9eef2);
-    color: #0e0e0f;
-  }
-  ::selection {
-    background: #06b6d4;
-    color: #010101;
-  }
+/* Design tokens via CSS variables for quick theme adjustments */
+:root {
+  --bg-dark: radial-gradient(circle at 30% 20%, #111 0%, #050505 60%);
+  --bg-light: linear-gradient(to bottom, #fafafa, #e9eef2);
+  --text-dark: #f5f5f5;
+  --text-light: #0f1113;
+  --text-light-secondary: #334155;
+  --text-light-tertiary: #475569;
+  --border-light: #d1d5db;
+  --card-light: #ffffffcc;
+  --card-light-hover: #ffffff;
 }
 
-/* Components & utilities */
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
+    background: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  .light body {
+    background: var(--bg-light);
+    color: var(--text-light);
+  }
+  ::selection { background: #06b6d4; color: #010101; }
+}
+
 @layer components {
   .gradient-text {
     background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1);
     -webkit-background-clip: text;
     color: transparent;
   }
+  /* Light mode gradient improvement (slightly darker mid tones for contrast) */
+  .light .gradient-text {
+    background: linear-gradient(90deg,#0891b2,#2563eb,#4f46e5);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
 
   .card {
-    @apply relative rounded-xl border border-neutral-800 dark:border-neutral-800 bg-neutral-900/50 dark:bg-neutral-900/40
-           backdrop-blur p-5 transition-all duration-500;
+    @apply relative rounded-xl border border-neutral-800 dark:border-neutral-800 bg-neutral-900/50 dark:bg-neutral-900/40 backdrop-blur p-5 transition-all duration-500;
   }
   .light .card {
-    @apply bg-white/60 border-neutral-300;
+    background: var(--card-light);
+    border-color: var(--border-light);
+  }
+  .light .card:hover {
+    background: var(--card-light-hover);
   }
 
-  /* Hover animation wrapper
-     NOTE: Do NOT @apply 'group' here; Tailwind forbids @apply with 'group'.
-     We’ll attach 'group' via JSX className instead. */
-  .card-hover {
-    /* empty on purpose; acts as a hook for ::after below */
-    position: relative;
-  }
+  .card-hover { position: relative; }
 
-  /* Animated gradient border ring using ::after */
   .card-hover::after {
     content: '';
     position: absolute;
@@ -64,37 +72,37 @@
     -webkit-mask-composite: xor;
             mask-composite: exclude;
   }
+  .group:hover::after { opacity: 1; }
 
-  .group:hover::after {
-    opacity: 1;
-  }
-
-  /* Inner lift on hover */
-  .group:hover .lift {
-    transform: translateY(-3px);
-  }
-
-  .lift {
-    transition: transform .4s;
-  }
+  .group:hover .lift { transform: translateY(-3px); }
+  .lift { transition: transform .4s; }
 
   .tag {
     @apply text-xs px-2 py-1 rounded-md bg-neutral-800 text-neutral-200 border border-neutral-700;
   }
   .light .tag {
-    @apply bg-neutral-200 text-neutral-800 border-neutral-300;
+    background: #e2e8f0;
+    color: #1e293b;
+    border-color: #cbd5e1;
   }
 
   .section-title {
     @apply text-2xl font-semibold mb-8;
   }
+  .light .section-title {
+    color: var(--text-light);
+  }
+
+  /* Generic light mode text overrides for legacy neutral classes */
+  .light .text-neutral-300 { color: var(--text-light-secondary) !important; }
+  .light .text-neutral-400 { color: var(--text-light-tertiary) !important; }
+  .light p, .light li { color: var(--text-light-secondary); }
 }
 
-/* Keyframes for animated gradient border and content lift */
 @layer utilities {
   @keyframes borderFlow {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
 }
