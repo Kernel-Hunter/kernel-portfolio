@@ -7,7 +7,8 @@ const projects = [
     technologies: ['Java', 'Data Structures', 'Queues', 'Stacks'],
     repoUrl: 'https://github.com/Kernel-Hunter/Task-Management-Application',
     liveUrl: null,
-    image: '/assets/task-management.png'
+    image: '/assets/task-management.png',
+    alt: 'Person working on a laptop with a digital checklist interface overlay'
   },
   {
     id: 'kernel-experiments',
@@ -17,7 +18,8 @@ const projects = [
     technologies: ['C', 'Linux Kernel', 'Shell', 'Systems Programming', 'Python'],
     repoUrl: 'https://github.com/Kernel-Hunter/kernel-experiments',
     liveUrl: null,
-    image: '/assets/kernel-experiments.png'
+    image: '/assets/kernel-experiments.png',
+    alt: 'Laptop user with floating code overlays symbolizing low-level systems development'
   },
   {
     id: 'smart-mirror-system',
@@ -28,7 +30,8 @@ const projects = [
     achievements: ['Second Place – University Innovation Challenge'],
     repoUrl: null,
     liveUrl: null,
-    image: '/assets/smart-mirror.png'
+    image: '/assets/smart-mirror.png',
+    alt: 'Interactive smart mirror displaying a web interface within an illuminated frame'
   },
   {
     id: 'underground-water-recycling',
@@ -39,7 +42,8 @@ const projects = [
     achievements: ['4th Place – University Innovation Challenge'],
     repoUrl: null,
     liveUrl: null,
-    image: '/assets/water-recycling.png'
+    image: '/assets/water-recycling.png',
+    alt: 'Aerial view of circular water treatment basins surrounded by greenery'
   }
 ];
 
