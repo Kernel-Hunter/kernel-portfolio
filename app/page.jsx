@@ -1,15 +1,17 @@
+'use client';
+
 import Hero from '../components/Hero.jsx';
-import About from '../components/About.jsx';
 import ProjectsSection from '../components/ProjectsSection.jsx';
-import Contact from '../components/Contact.jsx';
+import About from '../components/About.jsx';
+import SkillsCerts from '../components/SkillsCerts.jsx';
 
 export default function Page() {
   return (
     <>
       <Hero />
-      <About />
       <ProjectsSection />
-      <Contact />
+      <About />
+      <SkillsCerts />
     </>
   );
 }

@@ -10,6 +10,7 @@ export default function Header() {
         <nav className="flex items-center gap-6 text-sm">
           <a href="#projects" className="nav-link">Projects</a>
           <a href="#about" className="nav-link">About</a>
+          <a href="#skills-certifications" className="nav-link">Skills & Certs</a>
           <a href="#contact" className="nav-link">Contact</a>
           <ThemeToggle />
         </nav>
