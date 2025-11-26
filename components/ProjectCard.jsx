@@ -8,7 +8,8 @@ export default function ProjectCard({ project }) {
   const [error, setError] = useState(false);
 
   return (
-    <div className="card card-hover flex flex-col gap-3">
+    {/* attach 'group' here instead of @apply in CSS */}
+    <div className="group card card-hover flex flex-col gap-3">
       <div className="lift aspect-video w-full rounded-md bg-neutral-800 overflow-hidden relative">
         {project.image && !error ? (
           <Image
