@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base themes */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -11,24 +12,76 @@
     background: radial-gradient(circle at 30% 20%, #111 0%, #050505 60%);
     color: #f5f5f5;
   }
+  .light body {
+    background: linear-gradient(to bottom, #fafafa, #e9eef2);
+    color: #0e0e0f;
+  }
   ::selection {
     background: #06b6d4;
     color: #010101;
   }
 }
 
+/* Components & utilities */
 @layer components {
   .gradient-text {
     background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1);
     -webkit-background-clip: text;
     color: transparent;
   }
+
   .card {
-    @apply rounded-xl border border-neutral-800 bg-neutral-900/50 backdrop-blur p-5 transition hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-900/30;
+    @apply relative rounded-xl border border-neutral-800 dark:border-neutral-800 bg-neutral-900/50 dark:bg-neutral-900/40
+           backdrop-blur p-5 transition-all duration-500;
   }
+  .light .card {
+    @apply bg-white/60 border-neutral-300;
+  }
+
+  /* Hover animation wrapper */
+  .card-hover {
+    @apply group;
+  }
+
+  /* Animated gradient border ring using ::after */
+  .card-hover::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1,#06b6d4);
+    background-size: 300% 100%;
+    opacity: 0;
+    transition: opacity .4s;
+    animation: borderFlow 6s linear infinite;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+  }
+
+  .group:hover::after {
+    opacity: 1;
+  }
+
+  /* Inner lift on hover */
+  .group:hover .lift {
+    transform: translateY(-3px);
+  }
+
+  .lift {
+    transition: transform .4s;
+  }
+
   .tag {
     @apply text-xs px-2 py-1 rounded-md bg-neutral-800 text-neutral-200 border border-neutral-700;
   }
+  .light .tag {
+    @apply bg-neutral-200 text-neutral-800 border-neutral-300;
+  }
+
   .section-title {
     @apply text-2xl font-semibold mb-8;
   }
