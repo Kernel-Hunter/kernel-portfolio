@@ -1,21 +1,56 @@
+'use client';
+
 export default function Contact() {
   return (
-    <section id="contact" className="py-20 border-t border-neutral-800">
-      <h3 className="section-title">Contact</h3>
-      <div className="text-neutral-300 space-y-4 max-w-3xl">
-        <p>
-          Reach out for collaboration in systems programming, IoT innovation, or sustainable engineering concepts.
+    <section id="contact" className="py-20 border-t dark:border-neutral-800 border-neutral-300">
+      <div className="max-w-4xl mx-auto px-5 text-center">
+        <h3 className="section-title">Contact</h3>
+        <p className="dark:text-neutral-300 text-neutral-700 max-w-2xl mx-auto">
+          I’m open to collaborations, internships, and software roles. Reach out for projects in systems programming,
+          IoT, embedded, or full‑stack. I’ll get back to you quickly.
         </p>
-        <ul className="space-y-2 text-sm">
-          <li>Email: <a className="hover:text-cyan-400 underline" href="mailto:karim.masmoudi.pro@gmail.com">karim.masmoudi.pro@gmail.com</a></li>
-          <li>Twitter: <a className="hover:text-cyan-400 underline" href="https://twitter.com/karim0masmoudi">@karim0masmoudi</a></li>
-          <li>Instagram: <a className="hover:text-cyan-400 underline" href="https://www.instagram.com/karim._.masmoudi">@karim._.masmoudi</a></li>
-          <li>Facebook: <a className="hover:text-cyan-400 underline" href="https://www.facebook.com/kimou.mas">kimou.mas</a></li>
-          <li>Link Hub: <a className="hover:text-cyan-400 underline" href="https://linktr.ee/karim.masmoudi">linktr.ee/karim.masmoudi</a></li>
-          <li>Phone: <span className="text-neutral-400">+216 94262521</span></li>
-        </ul>
-        <p className="text-xs text-neutral-500">
-        </p>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="mailto:karim.masmoudi.dev@gmail.com"
+            className="icon-btn"
+            aria-label="Send email"
+            title="Send email"
+          >
+            {/* Mail icon */}
+            <svg viewBox="0 0 24 24" width="22" height="22" className="fill-current" aria-hidden="true">
+              <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 2-8 5L4 6h16Zm0 12H4V8l8 5 8-5v10Z"/>
+            </svg>
+          </a>
+
+          <a
+            href="https://github.com/Kernel-Hunter"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-btn"
+            aria-label="GitHub profile"
+            title="GitHub profile"
+          >
+            {/* GitHub icon */}
+            <svg viewBox="0 0 24 24" width="22" height="22" className="fill-current" aria-hidden="true">
+              <path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.38 7.86 10.89.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.75-1.56-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.02 11.02 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.44-2.69 5.41-5.25 5.7.43.37.81 1.11.81 2.25 0 1.63-.02 2.95-.02 3.35 0 .31.21.68.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z" />
+            </svg>
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/karim-masmoudi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-btn"
+            aria-label="LinkedIn profile"
+            title="LinkedIn profile"
+          >
+            {/* LinkedIn icon */}
+            <svg viewBox="0 0 24 24" width="22" height="22" className="fill-current" aria-hidden="true">
+              <path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5Zm.02 6H2v12h3V9.5Zm5 0H7v12h3v-6.66c0-1.78 2.07-1.92 2.07 0V21.5H15v-7.52c0-4.2-4.55-4.04-5 1.12V9.5Z"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </section>
   );
