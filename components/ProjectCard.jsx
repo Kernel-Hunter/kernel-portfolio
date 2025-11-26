@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Tag from './Tag.jsx';
 import { useState } from 'react';
@@ -23,7 +25,6 @@ export default function ProjectCard({ project }) {
             {project.alt || 'Image unavailable'}
           </div>
         )}
-        {/* Optional subtle overlay */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition bg-gradient-to-br from-cyan-500 via-indigo-500 to-blue-600 mix-blend-overlay" />
       </div>
 
@@ -36,7 +37,7 @@ export default function ProjectCard({ project }) {
       </p>
 
       {project.achievements?.length && (
-        <ul className="lift text-xs text-cyan-300 light:text-indigo-600 list-disc ml-4 space-y-1 animate-floatUp">
+        <ul className="lift text-xs text-cyan-300 light:text-indigo-600 list-disc ml-4 space-y-1">
           {project.achievements.map(a => <li key={a}>{a}</li>)}
         </ul>
       )}
@@ -47,22 +48,12 @@ export default function ProjectCard({ project }) {
 
       <div className="lift flex gap-3 pt-3 text-sm">
         {project.repoUrl && (
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-cyan-400 underline decoration-neutral-600"
-          >
+          <a href={project.repoUrl} target="_blank" rel="noreferrer" className="hover:text-cyan-400 underline decoration-neutral-600">
             Repo
           </a>
         )}
         {project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-cyan-400 underline decoration-neutral-600"
-          >
+          <a href={project.liveUrl} target="_blank" rel="noreferrer" className="hover:text-cyan-400 underline decoration-neutral-600">
             Live
           </a>
         )}
