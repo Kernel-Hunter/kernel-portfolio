@@ -9,11 +9,11 @@
 
   --text-dark: #f5f5f5;
   --text-light: #0f1113;
-  --text-light-secondary: #334155; /* slate-700-ish */
-  --text-light-tertiary: #475569;   /* slate-600-ish */
+  --text-light-secondary: #334155;
+  --text-light-tertiary: #475569;
 
-  --border-light: #d1d5db; /* gray-300 */
-  --card-light: #ffffffcc; /* translucent white */
+  --border-light: #d1d5db;
+  --card-light: #ffffffcc;
   --card-light-hover: #ffffff;
 }
 
@@ -25,6 +25,8 @@
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
     background: var(--bg-dark);
     color: var(--text-dark);
+    /* Offset content for sticky header height */
+    padding-top: 72px; /* matches .site-header height */
   }
 
   .light body {
@@ -37,6 +39,38 @@
 
 /* Components & utilities */
 @layer components {
+  /* Sticky blurred header */
+  .site-header {
+    @apply fixed top-0 left-0 right-0 z-50;
+    backdrop-filter: saturate(1.2) blur(10px);
+    -webkit-backdrop-filter: saturate(1.2) blur(10px);
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 12, 16, 0.65),
+      rgba(10, 12, 16, 0.35)
+    );
+    border-bottom: 1px solid rgba(120, 120, 120, 0.15);
+  }
+  .light .site-header {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.75),
+      rgba(255, 255, 255, 0.45)
+    );
+    border-bottom: 1px solid rgba(209, 213, 219, 0.6); /* gray-300 */
+  }
+
+  .header-inner {
+    @apply max-w-6xl mx-auto px-5 py-4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    @apply hover:text-cyan-400 transition;
+  }
+
   /* Gradient text heading */
   .gradient-text {
     background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1);
@@ -127,7 +161,7 @@
     100% { background-position: 0% 50%; }
   }
 
-  /* Optional smoother transform utility (used if you prefer CSS-only smoothing) */
+  /* Optional smoother transform utility (CSS-only smoothing) */
   .smooth-scale {
     transition: transform 520ms cubic-bezier(0.19, 1, 0.22, 1);
     will-change: transform;
