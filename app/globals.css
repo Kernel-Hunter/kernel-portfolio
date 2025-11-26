@@ -1,5 +1,158 @@
-/* === Skills & Certifications section styles === */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens */
+:root {
+  --bg-dark: radial-gradient(circle at 30% 20%, #111 0%, #050505 60%);
+  --bg-light: linear-gradient(to bottom, #fafafa, #e9eef2);
+
+  --text-dark: #f5f5f5;
+  --text-light: #0f1113;
+  --text-light-secondary: #334155; /* slate-700-ish */
+  --text-light-tertiary: #475569;   /* slate-600-ish */
+
+  --border-light: #d1d5db; /* gray-300 */
+  --card-light: #ffffffcc; /* translucent white */
+  --card-light-hover: #ffffff;
+}
+
+/* Base themes */
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
+    background: var(--bg-dark);
+    color: var(--text-dark);
+    /* Offset content for sticky header height */
+    padding-top: 72px; /* matches .site-header height */
+  }
+
+  .light body {
+    background: var(--bg-light);
+    color: var(--text-light);
+  }
+
+  ::selection { background: #06b6d4; color: #010101; }
+}
+
+/* Components & utilities */
 @layer components {
+  /* Sticky blurred header */
+  .site-header {
+    @apply fixed top-0 left-0 right-0 z-50;
+    backdrop-filter: saturate(1.2) blur(10px);
+    -webkit-backdrop-filter: saturate(1.2) blur(10px);
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 12, 16, 0.65),
+      rgba(10, 12, 16, 0.35)
+    );
+    border-bottom: 1px solid rgba(120, 120, 120, 0.15);
+  }
+  .light .site-header {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.75),
+      rgba(255, 255, 255, 0.45)
+    );
+    border-bottom: 1px solid rgba(209, 213, 219, 0.6); /* gray-300 */
+  }
+
+  .header-inner {
+    @apply max-w-6xl mx-auto px-5 py-4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    @apply hover:text-cyan-400 transition;
+  }
+
+  /* Gradient text heading */
+  .gradient-text {
+    background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  .light .gradient-text {
+    background: linear-gradient(90deg,#0891b2,#2563eb,#4f46e5);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Card base */
+  .card {
+    @apply relative rounded-xl border border-neutral-800 dark:border-neutral-800
+           bg-neutral-900/50 dark:bg-neutral-900/40 backdrop-blur p-5 transition-all duration-500;
+  }
+  .light .card {
+    background: var(--card-light);
+    border-color: var(--border-light);
+  }
+  .light .card:hover {
+    background: var(--card-light-hover);
+  }
+
+  /* Hover animation wrapper (group is added in JSX; do not @apply group here) */
+  .card-hover { position: relative; }
+
+  /* Animated gradient border ring using ::after */
+  .card-hover::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(90deg,#06b6d4,#3b82f6,#6366f1,#06b6d4);
+    background-size: 300% 100%;
+    opacity: 0;
+    transition: opacity .4s;
+    animation: borderFlow 12s linear infinite;
+    pointer-events: none; /* allow clicking underlying links */
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+  }
+
+  /* Group hover effects (group class is on the card in JSX) */
+  .group:hover::after { opacity: 1; }
+  .group:hover .lift { transform: translateY(-3px); }
+  .lift { transition: transform .4s; }
+
+  /* Tags/chips */
+  .tag {
+    @apply text-xs px-2 py-1 rounded-md bg-neutral-800 text-neutral-200 border border-neutral-700;
+  }
+  .light .tag {
+    background: #e2e8f0; /* slate-200 */
+    color: #1e293b;      /* slate-800 */
+    border-color: #cbd5e1; /* slate-300 */
+  }
+
+  /* Section titles */
+  .section-title { @apply text-2xl font-semibold mb-8; }
+  .light .section-title { color: var(--text-light); }
+
+  /* Light-mode text overrides for old neutral classes */
+  .light .text-neutral-300 { color: var(--text-light-secondary) !important; }
+  .light .text-neutral-400 { color: var(--text-light-tertiary) !important; }
+  .light p, .light li { color: var(--text-light-secondary); }
+
+  /* Icon button style for GitHub and external link */
+  .icon-btn {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-md border transition;
+    @apply dark:text-neutral-200 text-neutral-800;
+    @apply dark:border-neutral-700 border-neutral-300;
+    @apply hover:text-cyan-500 dark:hover:text-cyan-400 hover:border-cyan-400;
+    background: transparent;
+  }
+
+  /* === Skills & Certifications section styles === */
   .panel {
     @apply relative rounded-2xl border dark:border-neutral-800 border-neutral-300 p-6 lg:p-7 bg-neutral-900/40;
   }
@@ -72,7 +225,14 @@
   }
 }
 
+/* Keyframes and helper utilities */
 @layer utilities {
+  @keyframes borderFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   /* Entrance animation */
   @keyframes fadeInUp {
     0%   { opacity: 0; transform: translateY(6px); }
@@ -80,5 +240,14 @@
   }
   .animate-fadeInUp {
     animation: fadeInUp 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Optional smoother transform utility (CSS-only smoothing) */
+  .smooth-scale {
+    transition: transform 520ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: transform;
+  }
+  .group:hover .smooth-scale {
+    transform: translateY(-3px) scale(1.035);
   }
 }
