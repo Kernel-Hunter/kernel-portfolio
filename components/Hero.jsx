@@ -6,7 +6,7 @@ export default function Hero() {
       </h2>
       <p className="text-lg md:text-xl text-neutral-300 max-w-3xl">
         Software Engineer driven by curiosity and creativity. I’ve built underwater robots, smart IoT devices,
-        and AI-powered systems—collaborating with international organizations on cutting-edge projects.
+        and AI-powered systems collaborating with international organizations on cutting-edge projects.
         Engineering is the fusion of imagination, precision, and purpose.
       </p>
       <div className="flex gap-4 pt-4">
