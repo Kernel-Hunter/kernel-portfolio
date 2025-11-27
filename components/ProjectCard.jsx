@@ -2,81 +2,122 @@
 
 import Image from 'next/image';
 import Tag from './Tag.jsx';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 export default function ProjectCard({ project }) {
   const [error, setError] = useState(false);
-  const cardRef = useRef(null);
+
+  // Refs for tilt animation
+  const tiltRef = useRef(null);
   const glareRef = useRef(null);
   const rafRef = useRef(0);
+  const runningRef = useRef(false);
   const hoverRef = useRef(false);
 
-  const maxRotate = 8; // degrees
-  const scaleOnHover = 1.035;
+  // Target/current transform state
+  const target = useRef({ rx: 0, ry: 0, s: 1, gx: 50, gy: 50 });
+  const current = useRef({ rx: 0, ry: 0, s: 1, gx: 50, gy: 50 });
+
+  const PERSPECTIVE = 900;
+  const MAX_ROT = 7;         // degrees (reduce for smoother feel)
+  const SCALE_HOVER = 1.035; // slight pop
+  const LERP = 0.12;         // smoothing factor
+
+  const startLoop = () => {
+    if (runningRef.current) return;
+    runningRef.current = true;
+    const loop = () => {
+      // Lerp toward target
+      const nx = current.current.rx + (target.current.rx - current.current.rx) * LERP;
+      const ny = current.current.ry + (target.current.ry - current.current.ry) * LERP;
+      const ns = current.current.s + (target.current.s - current.current.s) * LERP;
+      const ngx = current.current.gx + (target.current.gx - current.current.gx) * LERP;
+      const ngy = current.current.gy + (target.current.gy - current.current.gy) * LERP;
+
+      current.current = { rx: nx, ry: ny, s: ns, gx: ngx, gy: ngy };
+
+      if (tiltRef.current) {
+        tiltRef.current.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${nx.toFixed(2)}deg) rotateY(${ny.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+      }
+      if (glareRef.current) {
+        glareRef.current.style.opacity = hoverRef.current ? '0.20' : '0';
+        glareRef.current.style.background = `radial-gradient(220px 140px at ${ngx.toFixed(1)}% ${ngy.toFixed(1)}%, rgba(255,255,255,0.25), transparent 60%)`;
+      }
+
+      const atRest =
+        Math.abs(target.current.rx - nx) < 0.02 &&
+        Math.abs(target.current.ry - ny) < 0.02 &&
+        Math.abs(target.current.s - ns) < 0.001;
+
+      if (!hoverRef.current && atRest) {
+        runningRef.current = false;
+        rafRef.current = 0;
+        return;
+      }
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+  };
+
+  const handleEnter = () => {
+    hoverRef.current = true;
+    target.current.s = SCALE_HOVER;
+    startLoop();
+  };
 
   const handleMove = (e) => {
-    if (!cardRef.current) return;
-    hoverRef.current = true;
-
-    const el = cardRef.current;
-    const rect = el.getBoundingClientRect();
-
+    if (!tiltRef.current) return;
+    const rect = tiltRef.current.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;  // 0..1
     const py = (e.clientY - rect.top) / rect.height;  // 0..1
 
-    const rotY = (px - 0.5) * (maxRotate * 2);  // left/right
-    const rotX = -(py - 0.5) * (maxRotate * 2); // up/down
-
-    // Throttle with rAF for smoother updates
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => {
-      el.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale(${scaleOnHover})`;
-      // Move the “glare” highlight toward the cursor
-      if (glareRef.current) {
-        const gx = Math.round(px * 100);
-        const gy = Math.round(py * 100);
-        glareRef.current.style.opacity = '0.20';
-        glareRef.current.style.background = `radial-gradient(220px 140px at ${gx}% ${gy}%, rgba(255,255,255,0.25), transparent 60%)`;
-      }
-    });
+    // Set target rotation and glare position
+    target.current.ry = (px - 0.5) * (MAX_ROT * 2);   // rotateY left/right
+    target.current.rx = -(py - 0.5) * (MAX_ROT * 2);  // rotateX up/down
+    target.current.gx = Math.min(100, Math.max(0, px * 100));
+    target.current.gy = Math.min(100, Math.max(0, py * 100));
   };
 
   const handleLeave = () => {
-    if (!cardRef.current) return;
     hoverRef.current = false;
-
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => {
-      cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-      if (glareRef.current) {
-        glareRef.current.style.opacity = '0';
-      }
-    });
+    target.current = { rx: 0, ry: 0, s: 1, gx: current.current.gx, gy: current.current.gy };
+    startLoop();
   };
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   const techs = Array.isArray(project?.technologies) ? project.technologies : [];
 
   return (
     <div
-      ref={cardRef}
+      ref={tiltRef}
+      onMouseEnter={handleEnter}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className="group card card-hover flex flex-col gap-3 transform-gpu will-change-transform transition-[transform,box-shadow] duration-300"
-      style={{ transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)' }}
+      className="group card card-hover flex flex-col gap-3 transform-gpu will-change-transform contain-paint"
+      style={{
+        transform: `perspective(${PERSPECTIVE}px) rotateX(0deg) rotateY(0deg) scale(1)`,
+        transition: 'box-shadow 200ms ease', // avoid transform CSS transitions during move
+        backfaceVisibility: 'hidden',
+      }}
     >
-      {/* glare overlay across the whole card (click-through) */}
+      {/* Glare layer */}
       <div
         ref={glareRef}
         className="pointer-events-none absolute inset-0 rounded-xl"
         style={{
           opacity: 0,
-          transition: 'opacity 220ms ease-out',
+          transition: 'opacity 200ms ease-out',
           zIndex: 0,
         }}
         aria-hidden="true"
       />
 
-      {/* Card content */}
+      {/* Content wrapper stays above glare */}
       <div className="relative z-10">
         <div className="lift aspect-video w-full rounded-md bg-neutral-800 light:bg-slate-200 overflow-hidden relative">
           {project.image && !error ? (
@@ -122,7 +163,6 @@ export default function ProjectCard({ project }) {
           </div>
         )}
 
-        {/* action icons */}
         <div className="lift flex gap-3 pt-3 text-sm relative z-10">
           {project.repoUrl && (
             <a
