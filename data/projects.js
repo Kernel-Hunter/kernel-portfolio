@@ -2,7 +2,7 @@ const projects = [
   {
     id: 'task-management-app',
     title: 'Task Management Application',
-    summary: 'Data-structure-powered manager (Stacks & Queues) for undo, reorder, categories, and metrics.',
+    summary: 'A task-management application built with Stacks and Queues, featuring task creation, completion tracking, reordering, categories, undo actions, and task statistics.',
     description: 'Java application leveraging stacks and queues to implement reversible operations, efficient reordering, categorized views, and progress statistics.',
     technologies: ['Java', 'Data Structures', 'Queues', 'Stacks'],
     repoUrl: 'https://github.com/Kernel-Hunter/Task-Management-Application',
@@ -13,7 +13,7 @@ const projects = [
   {
     id: 'kernel-experiments',
     title: 'Kernel Experiments',
-    summary: 'Low-level exploratory Linux kernel modules & userspace test harnesses.',
+    summary: 'Kernel-experiments is a lightweight project with example kernel code, helper user-space tools, pentest automation helpers and docs - intended as a safe, well-documented starting point for kernel/module exploration and security tooling.',
     description: 'Experimental modules examining memory behavior, lifecycle, and security surfaces—includes build scripts, pentest helper tools, and userspace read tests.',
     technologies: ['C', 'Linux Kernel', 'Shell', 'Systems Programming', 'Python'],
     repoUrl: 'https://github.com/Kernel-Hunter/kernel-experiments',
