@@ -7,7 +7,7 @@ import { useRef, useState, useEffect } from 'react';
 export default function ProjectCard({ project }) {
   const [error, setError] = useState(false);
 
-  // Refs for tilt animation
+  // Refs for tilt + glare + shadow animation
   const tiltRef = useRef(null);
   const glareRef = useRef(null);
   const rafRef = useRef(0);
@@ -18,10 +18,14 @@ export default function ProjectCard({ project }) {
   const target = useRef({ rx: 0, ry: 0, s: 1, gx: 50, gy: 50 });
   const current = useRef({ rx: 0, ry: 0, s: 1, gx: 50, gy: 50 });
 
+  const prefersReducedMotion = typeof window !== 'undefined'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+
   const PERSPECTIVE = 900;
-  const MAX_ROT = 7;         // degrees (reduce for smoother feel)
-  const SCALE_HOVER = 1.035; // slight pop
-  const LERP = 0.12;         // smoothing factor
+  const MAX_ROT = 7;         // degrees
+  const SCALE_HOVER = 1.035; // slight lift
+  const LERP = prefersReducedMotion ? 0.35 : 0.12;
 
   const startLoop = () => {
     if (runningRef.current) return;
@@ -37,11 +41,36 @@ export default function ProjectCard({ project }) {
       current.current = { rx: nx, ry: ny, s: ns, gx: ngx, gy: ngy };
 
       if (tiltRef.current) {
-        tiltRef.current.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${nx.toFixed(2)}deg) rotateY(${ny.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+        tiltRef.current.style.transform =
+          `perspective(${PERSPECTIVE}px) rotateX(${nx.toFixed(2)}deg) rotateY(${ny.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+
+        // Dynamic shadow: shift & intensify slightly based on rotation
+        const shadowStrength = hoverRef.current ? 0.35 : 0.18;
+        // Map rotation to offset
+        const offsetX = (ny / MAX_ROT) * 18;  // horizontal shift
+        const offsetY = (nx / MAX_ROT) * 12;  // vertical shift
+
+        // Create layered shadow (dark mode vs light mode colors)
+        const darkShadow = `
+          ${offsetX.toFixed(1)}px ${offsetY.toFixed(1)}px 18px -4px rgba(0,0,0,${(shadowStrength + 0.25).toFixed(2)}),
+          ${offsetX * 0.5}px ${offsetY * 0.5}px 32px -6px rgba(6,182,212,${(shadowStrength * 0.55).toFixed(2)}),
+          ${offsetX * 0.3}px ${offsetY * 0.3}px 50px -10px rgba(99,102,241,${(shadowStrength * 0.45).toFixed(2)})
+        `;
+        const lightShadow = `
+          ${offsetX.toFixed(1)}px ${offsetY.toFixed(1)}px 18px -4px rgba(0,0,0,${(shadowStrength * 0.35 + 0.12).toFixed(2)}),
+          ${offsetX * 0.4}px ${offsetY * 0.4}px 36px -8px rgba(6,182,212,${(shadowStrength * 0.35).toFixed(2)}),
+          ${offsetX * 0.25}px ${offsetY * 0.25}px 54px -10px rgba(99,102,241,${(shadowStrength * 0.30).toFixed(2)})
+        `;
+
+        // Decide based on presence of .light ancestor
+        const inLight = document.documentElement.classList.contains('light') ||
+                        tiltRef.current.closest('.light');
+        tiltRef.current.style.boxShadow = inLight ? lightShadow : darkShadow;
       }
       if (glareRef.current) {
-        glareRef.current.style.opacity = hoverRef.current ? '0.20' : '0';
-        glareRef.current.style.background = `radial-gradient(220px 140px at ${ngx.toFixed(1)}% ${ngy.toFixed(1)}%, rgba(255,255,255,0.25), transparent 60%)`;
+        glareRef.current.style.opacity = hoverRef.current ? '0.22' : '0';
+        glareRef.current.style.background =
+          `radial-gradient(220px 140px at ${ngx.toFixed(1)}% ${ngy.toFixed(1)}%, rgba(255,255,255,0.25), transparent 60%)`;
       }
 
       const atRest =
@@ -71,7 +100,6 @@ export default function ProjectCard({ project }) {
     const px = (e.clientX - rect.left) / rect.width;  // 0..1
     const py = (e.clientY - rect.top) / rect.height;  // 0..1
 
-    // Set target rotation and glare position
     target.current.ry = (px - 0.5) * (MAX_ROT * 2);   // rotateY left/right
     target.current.rx = -(py - 0.5) * (MAX_ROT * 2);  // rotateX up/down
     target.current.gx = Math.min(100, Math.max(0, px * 100));
@@ -101,8 +129,8 @@ export default function ProjectCard({ project }) {
       className="group card card-hover flex flex-col gap-3 transform-gpu will-change-transform contain-paint"
       style={{
         transform: `perspective(${PERSPECTIVE}px) rotateX(0deg) rotateY(0deg) scale(1)`,
-        transition: 'box-shadow 200ms ease', // avoid transform CSS transitions during move
-        backfaceVisibility: 'hidden',
+        transition: 'box-shadow 240ms ease',
+        backfaceVisibility: 'hidden'
       }}
     >
       {/* Glare layer */}
@@ -112,12 +140,12 @@ export default function ProjectCard({ project }) {
         style={{
           opacity: 0,
           transition: 'opacity 200ms ease-out',
-          zIndex: 0,
+          zIndex: 0
         }}
         aria-hidden="true"
       />
 
-      {/* Content wrapper stays above glare */}
+      {/* Content wrapper */}
       <div className="relative z-10">
         <div className="lift aspect-video w-full rounded-md bg-neutral-800 light:bg-slate-200 overflow-hidden relative">
           {project.image && !error ? (
@@ -135,7 +163,6 @@ export default function ProjectCard({ project }) {
               {project.alt || 'Image unavailable'}
             </div>
           )}
-          {/* color overlay on hover (click-through) */}
           <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-20 transition bg-gradient-to-br from-cyan-500 via-indigo-500 to-blue-600 mix-blend-overlay" />
         </div>
 
