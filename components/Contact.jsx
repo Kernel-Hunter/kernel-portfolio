@@ -56,7 +56,7 @@ export default function Contact() {
           I’m open to collaborations, internships, and software roles. Send me a message directly here.
         </p>
 
-        {/* Social icons row (keep your existing icons above or below as you prefer) */}
+        {/* Social icons row can stay above/below */}
 
         <form onSubmit={onSubmit} className="mt-10 grid grid-cols-1 gap-4 max-w-2xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
