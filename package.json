@@ -1,7 +1,7 @@
 {
   "name": "kernel-portfolio",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,14 +9,8 @@
   },
   "dependencies": {
     "next": "14.2.5",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "next-themes": "^0.2.1",
-    "framer-motion": "^11.0.0"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.4.0"
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "nodemailer": "^6.9.8"
   }
 }
