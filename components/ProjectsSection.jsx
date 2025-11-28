@@ -1,12 +1,18 @@
-import projects from '../data/projects.js';
+'use client';
+
 import ProjectCard from './ProjectCard.jsx';
+import projects from '../data/projects.js'; // adjust path if needed
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="py-24">
-      <h3 className="section-title">Projects</h3>
-      <div className="grid gap-8 md:grid-cols-2">
-        {projects.map(p => <ProjectCard key={p.id} project={p} />)}
+    <section id="projects" className="py-20">
+      <div className="max-w-6xl mx-auto px-5">
+        <h3 className="section-title text-center mb-12">Projects</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((p, i) => (
+            <ProjectCard key={p.id || p.title} project={p} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );
