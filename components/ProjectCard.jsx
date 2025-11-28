@@ -7,76 +7,88 @@ import { useRef, useState, useEffect } from 'react';
 export default function ProjectCard({ project }) {
   const [error, setError] = useState(false);
 
-  // Refs for tilt + glare + shadow animation
-  const tiltRef = useRef(null);
-  const glareRef = useRef(null);
+  // ===== CONFIG (tweak these to match Ahmed's feel) =====
+  const CONFIG = {
+    perspective: 800,
+    maxRotate: 5,        // +/- degrees
+    scale: 1.045,        // scale on hover
+    lerp: 0.18,          // smoothing factor (higher = snappier)
+    parallaxPx: 10,      // image parallax travel
+    sheenOpacity: 0.18,  // max opacity of diagonal sheen
+    reduceMotionLerp: 0.35
+  };
+
+  // ===== REFS =====
+  const cardRef = useRef(null);
+  const sheenRef = useRef(null);
+  const imgRef = useRef(null);
   const rafRef = useRef(0);
   const runningRef = useRef(false);
   const hoverRef = useRef(false);
 
-  // Target/current transform state
-  const target = useRef({ rx: 0, ry: 0, s: 1, gx: 50, gy: 50 });
-  const current = useRef({ rx: 0, ry: 0, s: 1, gx: 50, gy: 50 });
+  // Target/current state for animation
+  const target = useRef({ rx: 0, ry: 0, s: 1, px: 50, py: 50 });
+  const current = useRef({ rx: 0, ry: 0, s: 1, px: 50, py: 50 });
 
-  const prefersReducedMotion = typeof window !== 'undefined'
+  // Respect prefers-reduced-motion
+  const reduceMotion = typeof window !== 'undefined'
     ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
     : false;
 
-  const PERSPECTIVE = 900;
-  const MAX_ROT = 7;         // degrees
-  const SCALE_HOVER = 1.035; // slight lift
-  const LERP = prefersReducedMotion ? 0.35 : 0.12;
+  const LERP = reduceMotion ? CONFIG.reduceMotionLerp : CONFIG.lerp;
 
   const startLoop = () => {
     if (runningRef.current) return;
     runningRef.current = true;
+
     const loop = () => {
-      // Lerp toward target
       const nx = current.current.rx + (target.current.rx - current.current.rx) * LERP;
       const ny = current.current.ry + (target.current.ry - current.current.ry) * LERP;
       const ns = current.current.s + (target.current.s - current.current.s) * LERP;
-      const ngx = current.current.gx + (target.current.gx - current.current.gx) * LERP;
-      const ngy = current.current.gy + (target.current.gy - current.current.gy) * LERP;
+      const npx = current.current.px + (target.current.px - current.current.px) * LERP;
+      const npy = current.current.py + (target.current.py - current.current.py) * LERP;
 
-      current.current = { rx: nx, ry: ny, s: ns, gx: ngx, gy: ngy };
+      current.current = { rx: nx, ry: ny, s: ns, px: npx, py: npy };
 
-      if (tiltRef.current) {
-        tiltRef.current.style.transform =
-          `perspective(${PERSPECTIVE}px) rotateX(${nx.toFixed(2)}deg) rotateY(${ny.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
-
-        // Dynamic shadow: shift & intensify slightly based on rotation
-        const shadowStrength = hoverRef.current ? 0.35 : 0.18;
-        // Map rotation to offset
-        const offsetX = (ny / MAX_ROT) * 18;  // horizontal shift
-        const offsetY = (nx / MAX_ROT) * 12;  // vertical shift
-
-        // Create layered shadow (dark mode vs light mode colors)
-        const darkShadow = `
-          ${offsetX.toFixed(1)}px ${offsetY.toFixed(1)}px 18px -4px rgba(0,0,0,${(shadowStrength + 0.25).toFixed(2)}),
-          ${offsetX * 0.5}px ${offsetY * 0.5}px 32px -6px rgba(6,182,212,${(shadowStrength * 0.55).toFixed(2)}),
-          ${offsetX * 0.3}px ${offsetY * 0.3}px 50px -10px rgba(99,102,241,${(shadowStrength * 0.45).toFixed(2)})
-        `;
-        const lightShadow = `
-          ${offsetX.toFixed(1)}px ${offsetY.toFixed(1)}px 18px -4px rgba(0,0,0,${(shadowStrength * 0.35 + 0.12).toFixed(2)}),
-          ${offsetX * 0.4}px ${offsetY * 0.4}px 36px -8px rgba(6,182,212,${(shadowStrength * 0.35).toFixed(2)}),
-          ${offsetX * 0.25}px ${offsetY * 0.25}px 54px -10px rgba(99,102,241,${(shadowStrength * 0.30).toFixed(2)})
-        `;
-
-        // Decide based on presence of .light ancestor
+      if (cardRef.current) {
+        cardRef.current.style.transform =
+          `perspective(${CONFIG.perspective}px) rotateX(${nx.toFixed(2)}deg) rotateY(${ny.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+        // Soft shadow (darker in dark mode, subtler in light mode)
         const inLight = document.documentElement.classList.contains('light') ||
-                        tiltRef.current.closest('.light');
-        tiltRef.current.style.boxShadow = inLight ? lightShadow : darkShadow;
+                        cardRef.current.closest('.light');
+        const baseShadowDark = '0 10px 28px -6px rgba(0,0,0,0.55)';
+        const hoverShadowDark = '0 18px 40px -10px rgba(0,0,0,0.65)';
+        const baseShadowLight = '0 8px 24px -6px rgba(15,23,42,0.18)';
+        const hoverShadowLight = '0 16px 42px -12px rgba(15,23,42,0.25)';
+        cardRef.current.style.boxShadow = hoverRef.current
+          ? (inLight ? hoverShadowLight : hoverShadowDark)
+          : (inLight ? baseShadowLight : baseShadowDark);
       }
-      if (glareRef.current) {
-        glareRef.current.style.opacity = hoverRef.current ? '0.22' : '0';
-        glareRef.current.style.background =
-          `radial-gradient(220px 140px at ${ngx.toFixed(1)}% ${ngy.toFixed(1)}%, rgba(255,255,255,0.25), transparent 60%)`;
+
+      // Parallax image shift (inverse direction for depth)
+      if (imgRef.current) {
+        const shiftX = ((npx - 50) / 50) * CONFIG.parallaxPx * -1;
+        const shiftY = ((npy - 50) / 50) * CONFIG.parallaxPx * -1;
+        imgRef.current.style.transform =
+          `translate3d(${shiftX.toFixed(1)}px, ${shiftY.toFixed(1)}px, 0) scale(1.03)`;
+      }
+
+      // Sheen diagonal highlight
+      if (sheenRef.current) {
+        if (hoverRef.current) {
+          sheenRef.current.style.opacity = CONFIG.sheenOpacity.toString();
+          // Move gradient focal point
+          sheenRef.current.style.background =
+            `linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) ${(npx)}%, rgba(255,255,255,0) 100%)`;
+        } else {
+          sheenRef.current.style.opacity = '0';
+        }
       }
 
       const atRest =
-        Math.abs(target.current.rx - nx) < 0.02 &&
-        Math.abs(target.current.ry - ny) < 0.02 &&
-        Math.abs(target.current.s - ns) < 0.001;
+        Math.abs(target.current.rx - nx) < 0.03 &&
+        Math.abs(target.current.ry - ny) < 0.03 &&
+        Math.abs(target.current.s - ns) < 0.002;
 
       if (!hoverRef.current && atRest) {
         runningRef.current = false;
@@ -85,30 +97,31 @@ export default function ProjectCard({ project }) {
       }
       rafRef.current = requestAnimationFrame(loop);
     };
+
     rafRef.current = requestAnimationFrame(loop);
   };
 
   const handleEnter = () => {
     hoverRef.current = true;
-    target.current.s = SCALE_HOVER;
+    target.current.s = CONFIG.scale;
     startLoop();
   };
 
   const handleMove = (e) => {
-    if (!tiltRef.current) return;
-    const rect = tiltRef.current.getBoundingClientRect();
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;  // 0..1
     const py = (e.clientY - rect.top) / rect.height;  // 0..1
 
-    target.current.ry = (px - 0.5) * (MAX_ROT * 2);   // rotateY left/right
-    target.current.rx = -(py - 0.5) * (MAX_ROT * 2);  // rotateX up/down
-    target.current.gx = Math.min(100, Math.max(0, px * 100));
-    target.current.gy = Math.min(100, Math.max(0, py * 100));
+    target.current.ry = (px - 0.5) * (CONFIG.maxRotate * 2);
+    target.current.rx = -(py - 0.5) * (CONFIG.maxRotate * 2);
+    target.current.px = px * 100;
+    target.current.py = py * 100;
   };
 
   const handleLeave = () => {
     hoverRef.current = false;
-    target.current = { rx: 0, ry: 0, s: 1, gx: current.current.gx, gy: current.current.gy };
+    target.current = { rx: 0, ry: 0, s: 1, px: target.current.px, py: target.current.py };
     startLoop();
   };
 
@@ -122,39 +135,40 @@ export default function ProjectCard({ project }) {
 
   return (
     <div
-      ref={tiltRef}
+      ref={cardRef}
       onMouseEnter={handleEnter}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       className="group card card-hover flex flex-col gap-3 transform-gpu will-change-transform contain-paint"
       style={{
-        transform: `perspective(${PERSPECTIVE}px) rotateX(0deg) rotateY(0deg) scale(1)`,
-        transition: 'box-shadow 240ms ease',
+        transform: `perspective(${CONFIG.perspective}px) rotateX(0deg) rotateY(0deg) scale(1)`,
+        transition: 'box-shadow 260ms ease',
         backfaceVisibility: 'hidden'
       }}
     >
-      {/* Glare layer */}
+      {/* Sheen layer */}
       <div
-        ref={glareRef}
+        ref={sheenRef}
         className="pointer-events-none absolute inset-0 rounded-xl"
         style={{
           opacity: 0,
-          transition: 'opacity 200ms ease-out',
-          zIndex: 0
+          background: 'linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%)',
+          mixBlendMode: 'overlay',
+          transition: 'opacity 300ms ease'
         }}
-        aria-hidden="true"
       />
 
       {/* Content wrapper */}
       <div className="relative z-10">
-        <div className="lift aspect-video w-full rounded-md bg-neutral-800 light:bg-slate-200 overflow-hidden relative">
+        <div className="aspect-video w-full rounded-md bg-neutral-800 light:bg-slate-200 overflow-hidden relative">
           {project.image && !error ? (
             <Image
+              ref={imgRef}
               src={project.image}
               alt={project.alt || project.title}
               width={800}
               height={450}
-              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-[1.03]"
+              className="object-cover w-full h-full will-change-transform transition-transform duration-[680ms] ease-[cubic-bezier(.19,1,.22,1)]"
               onError={() => setError(true)}
               priority={false}
             />
@@ -163,34 +177,31 @@ export default function ProjectCard({ project }) {
               {project.alt || 'Image unavailable'}
             </div>
           )}
-          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-20 transition bg-gradient-to-br from-cyan-500 via-indigo-500 to-blue-600 mix-blend-overlay" />
+          {/* subtle color wash on hover */}
+          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-15 transition duration-500 bg-gradient-to-br from-cyan-500/40 via-indigo-500/35 to-blue-600/40 mix-blend-overlay" />
         </div>
 
-        <h4 className="lift text-lg font-semibold transition-colors group-hover:text-cyan-500 dark:group-hover:text-cyan-400 dark:text-neutral-100 text-neutral-800 mt-3">
+        <h4 className="mt-4 text-lg font-semibold transition-colors group-hover:text-cyan-400 dark:group-hover:text-cyan-300 dark:text-neutral-100 text-neutral-800">
           {project.title}
         </h4>
 
-        <p className="lift text-sm dark:text-neutral-300 text-neutral-700">
+        <p className="text-sm dark:text-neutral-300 text-neutral-700">
           {project.summary}
         </p>
 
         {project.achievements?.length ? (
-          <ul className="lift text-xs dark:text-cyan-300 text-indigo-600 list-disc ml-4 space-y-1">
-            {project.achievements.map((a) => (
-              <li key={a}>{a}</li>
-            ))}
+          <ul className="mt-2 text-xs dark:text-cyan-300 text-indigo-600 list-disc ml-4 space-y-1">
+            {project.achievements.map(a => <li key={a}>{a}</li>)}
           </ul>
         ) : null}
 
         {techs.length > 0 && (
-          <div className="lift flex flex-wrap gap-2 pt-2">
-            {techs.map((t) => (
-              <Tag key={t}>{t}</Tag>
-            ))}
+          <div className="flex flex-wrap gap-2 pt-3">
+            {techs.map(t => <Tag key={t}>{t}</Tag>)}
           </div>
         )}
 
-        <div className="lift flex gap-3 pt-3 text-sm relative z-10">
+        <div className="flex gap-3 pt-4 text-sm relative z-10">
           {project.repoUrl && (
             <a
               href={project.repoUrl}
