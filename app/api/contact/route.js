@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const { name, email, message } = await request.json();
 
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -43,12 +43,16 @@ export async function POST(request: Request) {
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      return NextResponse.json({ error: err?.message || 'Failed to send' }, { status: 502 });
+      let errMsg = 'Failed to send';
+      try {
+        const err = await res.json();
+        errMsg = err?.message || errMsg;
+      } catch (_) {}
+      return NextResponse.json({ error: errMsg }, { status: 502 });
     }
 
     return NextResponse.json({ ok: true });
-  } catch (err: any) {
+  } catch (err) {
     return NextResponse.json({ error: 'Unexpected error' }, { status: 500 });
   }
 }
