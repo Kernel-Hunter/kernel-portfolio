@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
@@ -9,36 +8,47 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
-    // Create transporter using Gmail SMTP with app password
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.MAIL_USER,       // e.g., 'karim.masmoudi.pro@gmail.com'
-        pass: process.env.MAIL_PASS,       // Gmail App Password (not your normal password)
+    const apiKey = process.env.RESEND_API_KEY;
+    const to = process.env.MAIL_TO;
+    const from = process.env.MAIL_FROM || 'no-reply@resend.dev';
+
+    if (!apiKey || !to) {
+      return NextResponse.json({ error: 'Server not configured' }, { status: 500 });
+    }
+
+    const subject = `New message from ${name}`;
+    const html = `
+      <div style="font-family: system-ui, -apple-system, Segoe UI, Roboto;">
+        <h2>New Portfolio Message</h2>
+        <p><strong>From:</strong> ${name} &lt;${email}&gt;</p>
+        <p><strong>Message:</strong></p>
+        <p style="white-space: pre-line;">${message}</p>
+      </div>
+    `;
+
+    // Send via Resend HTTP API
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        from,
+        to,
+        reply_to: email,
+        subject,
+        html,
+      }),
     });
 
-    const mailOptions = {
-      from: `"Portfolio Contact" <${process.env.MAIL_USER}>`,
-      to: 'karim.masmoudi.pro@gmail.com',
-      replyTo: email,
-      subject: `New message from ${name}`,
-      text: `From: ${name} <${email}>\n\n${message}`,
-      html: `
-        <div style="font-family: system-ui, -apple-system, Segoe UI, Roboto;">
-          <h2>New Portfolio Message</h2>
-          <p><strong>From:</strong> ${name} &lt;${email}&gt;</p>
-          <p><strong>Message:</strong></p>
-          <p style="white-space: pre-line;">${message}</p>
-        </div>
-      `,
-    };
-
-    await transporter.sendMail(mailOptions);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      return NextResponse.json({ error: err?.message || 'Failed to send' }, { status: 502 });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
-    console.error('Contact API error:', err);
-    return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });
+    return NextResponse.json({ error: 'Unexpected error' }, { status: 500 });
   }
 }
