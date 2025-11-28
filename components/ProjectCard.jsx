@@ -15,23 +15,34 @@ export default function ProjectCard({ project, index = 0 }) {
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
       className="
+        portfolio-project-card
         group relative overflow-hidden rounded-xl
-        bg-white
         shadow-lg hover:shadow-2xl
         transition-all duration-300
         flex flex-col
       "
     >
-      {/* Dark-mode override using your .light convention */}
+      {/* Dark by default, light when .light is present */}
       <style jsx>{`
-        :global(.light) .group.relative.rounded-xl {
-          background: #ffffff;
+        .portfolio-project-card {
+          background: #0f0f12; /* dark panel */
+          border: 1px solid rgba(80, 80, 80, 0.35);
         }
-        :global(.light) .group.relative.rounded-xl .overlay-gradient {
-          background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+        :global(.light) .portfolio-project-card {
+          background: #ffffff; /* light panel */
+          border-color: #d1d5db; /* gray-300 */
         }
-        :global(.light) .group.relative.rounded-xl h4 {
-          color: #0f1113;
+        .portfolio-project-card h4 {
+          color: #f3f4f6; /* near-white title in dark */
+        }
+        :global(.light) .portfolio-project-card h4 {
+          color: #0f1113; /* dark title in light */
+        }
+        .portfolio-project-card p {
+          color: #d1d5db; /* body text in dark */
+        }
+        :global(.light) .portfolio-project-card p {
+          color: #334155; /* slate-700 in light */
         }
       `}</style>
 
@@ -47,30 +58,28 @@ export default function ProjectCard({ project, index = 0 }) {
             priority={false}
           />
         ) : (
-          <div className="flex items-center justify-center h-full text-sm text-neutral-600 px-4">
+          <div className="flex items-center justify-center h-full text-sm text-neutral-400 px-4">
             {project.alt || 'No image'}
           </div>
         )}
 
         {/* Ahmed-style overlay */}
         <div
-          className="overlay-gradient absolute inset-0 bg-gradient-to-t from-black/60 to-transparent
+          className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent
                      opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         />
       </div>
 
       {/* Content */}
       <div className="p-6 flex flex-col gap-3">
-        <h4 className="text-lg font-bold text-neutral-900">
-          {project.title}
-        </h4>
+        <h4 className="text-lg font-bold">{project.title}</h4>
 
-        <p className="text-sm text-neutral-700 leading-relaxed">
+        <p className="text-sm leading-relaxed">
           {project.summary || project.description}
         </p>
 
         {achievements.length > 0 && (
-          <ul className="text-xs text-indigo-600 list-disc ml-4 space-y-1">
+          <ul className="text-xs text-indigo-400 list-disc ml-4 space-y-1">
             {achievements.map(a => <li key={a}>{a}</li>)}
           </ul>
         )}
