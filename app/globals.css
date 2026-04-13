@@ -228,6 +228,78 @@
     filter: blur(12px);
     z-index: 0;
   }
+  /* =============================================
+     PROJECT CARDS
+  ============================================= */
+
+  /* Shell: base look in dark mode */
+  .project-card-shell {
+    background: #0f0f12;
+    border: 1px solid rgba(90, 90, 90, 0.3);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+
+  /* Shell: base look in light mode */
+  .light .project-card-shell {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    box-shadow:
+      0 2px 8px rgba(15, 23, 42, 0.06),
+      0 8px 24px rgba(15, 23, 42, 0.08);
+  }
+
+  /* Shell: hover shadow — deep warm lift, no outlines */
+  .group:hover .project-card-shell {
+    box-shadow:
+      0 0 40px rgba(6, 182, 212, 0.12),
+      0 20px 60px rgba(0, 0, 0, 0.55),
+      0 8px 24px rgba(0, 0, 0, 0.4);
+    border-color: rgba(6, 182, 212, 0.2);
+  }
+
+  .light .group:hover .project-card-shell {
+    box-shadow:
+      0 0 40px rgba(6, 182, 212, 0.10),
+      0 20px 60px rgba(15, 23, 42, 0.14),
+      0 8px 24px rgba(15, 23, 42, 0.10);
+    border-color: rgba(6, 182, 212, 0.25);
+  }
+
+  /* Glow: soft radial bloom from the top, visible on hover */
+  .project-card-glow {
+    background: radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      rgba(6, 182, 212, 0.10) 0%,
+      transparent 70%
+    );
+    transition: opacity 0.5s ease;
+  }
+
+  .light .project-card-glow {
+    background: radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      rgba(6, 182, 212, 0.08) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Text colours */
+  .project-card-title {
+    color: #f3f4f6;
+  }
+  .light .project-card-title {
+    color: #0f1113;
+  }
+  .project-card-body {
+    color: #d1d5db;
+  }
+  .light .project-card-body {
+    color: #334155;
+  }
+
 }
 
 /* Keyframes and helper utilities */
