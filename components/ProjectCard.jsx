@@ -31,20 +31,31 @@ export default function ProjectCard({ project, index = 0 }) {
           transition: box-shadow 300ms ease, transform 300ms ease, border-color 300ms ease;
         }
 
-        /* Default light-mode shadow */
+        /* Dark mode hover — lift + cyan glow */
+        .portfolio-project-card:hover {
+          box-shadow:
+            0 0 0 1.5px rgba(6, 182, 212, 0.5),
+            0 8px 32px rgba(6, 182, 212, 0.2),
+            0 16px 48px rgba(0, 0, 0, 0.6);
+          border-color: rgba(6, 182, 212, 0.45);
+          transform: translateY(-4px);
+        }
+
+        /* Default light-mode base shadow */
         :global(.light) .portfolio-project-card {
           background: #ffffff; /* light panel */
           border-color: #d1d5db; /* gray-300 */
           box-shadow: 0 4px 16px rgba(15, 23, 42, 0.10);
         }
 
-        /* Visible hover shadow in light mode (makes the animation obvious on white backgrounds) */
+        /* Light mode hover — lift + cyan glow */
         :global(.light) .portfolio-project-card:hover {
           box-shadow:
             0 0 0 1.5px rgba(6, 182, 212, 0.45),
+            0 8px 32px rgba(6, 182, 212, 0.15),
             0 14px 46px rgba(15, 23, 42, 0.18);
           border-color: rgba(6, 182, 212, 0.40);
-          transform: translateY(-2px);
+          transform: translateY(-4px);
         }
 
         .portfolio-project-card h4 {
