@@ -16,8 +16,7 @@ export default function ProjectCard({ project, index = 0 }) {
       transition={{ duration: 0.6, delay: index * 0.2 }}
       className="
         portfolio-project-card
-        group relative overflow-hidden rounded-xl
-        shadow-lg hover:shadow-2xl
+        group relative rounded-xl
         transition-all duration-300
         flex flex-col
       "
@@ -27,10 +26,13 @@ export default function ProjectCard({ project, index = 0 }) {
         .portfolio-project-card {
           background: #0f0f12; /* dark panel */
           border: 1px solid rgba(80, 80, 80, 0.35);
+          overflow: hidden; /* keep child content clipped to rounded corners */
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
         }
         :global(.light) .portfolio-project-card {
           background: #ffffff; /* light panel */
           border-color: #d1d5db; /* gray-300 */
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         }
         .portfolio-project-card h4 {
           color: #f3f4f6; /* near-white title in dark */
@@ -43,6 +45,14 @@ export default function ProjectCard({ project, index = 0 }) {
         }
         :global(.light) .portfolio-project-card p {
           color: #334155; /* slate-700 in light */
+        }
+        :global(.light) .portfolio-project-card:hover {
+          box-shadow:
+            0 0 0 1.5px rgba(6, 182, 212, 0.5),
+            0 10px 40px rgba(6, 182, 212, 0.4),
+            0 6px 20px rgba(99, 102, 241, 0.3),
+            0 4px 12px rgba(0, 0, 0, 0.12);
+          border-color: rgba(6, 182, 212, 0.4);
         }
       `}</style>
 
