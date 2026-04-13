@@ -14,64 +14,16 @@ export default function ProjectCard({ project, index = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
+      whileHover={{ y: -4 }}
       className="
-        portfolio-project-card
-        group relative rounded-xl
-        transition-all duration-300
-        flex flex-col
+        group relative rounded-xl flex flex-col overflow-hidden
+        border transition-all duration-300
+        dark:bg-[#0f0f12] dark:border-neutral-700 dark:shadow-card-dark
+        bg-white border-gray-300 shadow-card-light
+        dark:hover:shadow-card-hover-dark dark:hover:border-cyan-400/50
+        hover:shadow-card-hover-light hover:border-cyan-400/40
       "
     >
-      {/* Dark by default, light when .light is present */}
-      <style jsx>{`
-        .portfolio-project-card {
-          background: #0f0f12; /* dark panel */
-          border: 1px solid rgba(80, 80, 80, 0.35);
-          overflow: hidden; /* keep child content clipped to rounded corners */
-          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
-          transition: box-shadow 300ms ease, transform 300ms ease, border-color 300ms ease;
-        }
-
-        /* Dark mode hover — lift + cyan glow */
-        .portfolio-project-card:hover {
-          box-shadow:
-            0 0 0 1.5px rgba(6, 182, 212, 0.5),
-            0 8px 32px rgba(6, 182, 212, 0.2),
-            0 16px 48px rgba(0, 0, 0, 0.6);
-          border-color: rgba(6, 182, 212, 0.45);
-          transform: translateY(-4px);
-        }
-
-        /* Default light-mode base shadow */
-        :global(.light) .portfolio-project-card {
-          background: #ffffff; /* light panel */
-          border-color: #d1d5db; /* gray-300 */
-          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.10);
-        }
-
-        /* Light mode hover — lift + cyan glow */
-        :global(.light) .portfolio-project-card:hover {
-          box-shadow:
-            0 0 0 1.5px rgba(6, 182, 212, 0.45),
-            0 8px 32px rgba(6, 182, 212, 0.15),
-            0 14px 46px rgba(15, 23, 42, 0.18);
-          border-color: rgba(6, 182, 212, 0.40);
-          transform: translateY(-4px);
-        }
-
-        .portfolio-project-card h4 {
-          color: #f3f4f6; /* near-white title in dark */
-        }
-        :global(.light) .portfolio-project-card h4 {
-          color: #0f1113; /* dark title in light */
-        }
-        .portfolio-project-card p {
-          color: #d1d5db; /* body text in dark */
-        }
-        :global(.light) .portfolio-project-card p {
-          color: #334155; /* slate-700 in light */
-        }
-      `}</style>
-
       {/* Image area */}
       <div className="aspect-video overflow-hidden relative">
         {project.image ? (
@@ -89,7 +41,7 @@ export default function ProjectCard({ project, index = 0 }) {
           </div>
         )}
 
-        {/* Ahmed-style overlay */}
+        {/* Overlay on hover */}
         <div
           className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent
                      opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
@@ -98,9 +50,11 @@ export default function ProjectCard({ project, index = 0 }) {
 
       {/* Content */}
       <div className="p-6 flex flex-col gap-3">
-        <h4 className="text-lg font-bold">{project.title}</h4>
+        <h4 className="text-lg font-bold dark:text-gray-100 text-gray-900">
+          {project.title}
+        </h4>
 
-        <p className="text-sm leading-relaxed">
+        <p className="text-sm leading-relaxed dark:text-gray-300 text-slate-700">
           {project.summary || project.description}
         </p>
 
