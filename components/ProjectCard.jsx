@@ -44,6 +44,9 @@ export default function ProjectCard({ project, index = 0 }) {
         :global(.light) .portfolio-project-card p {
           color: #334155; /* slate-700 in light */
         }
+        :global(.light) .portfolio-project-card:hover {
+          box-shadow: 0 8px 32px rgba(6, 182, 212, 0.25), 0 4px 16px rgba(99, 102, 241, 0.18), 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
       `}</style>
 
       {/* Image area */}
