@@ -44,36 +44,6 @@
 
 /* Components & utilities */
 @layer components {
-  /* =============================================
-     PROJECT CARDS — CSS custom properties
-     next-themes puts .dark on <html>, so we scope
-     to html.dark (dark) and html:not(.dark) (light)
-  ============================================= */
-
-  /* Dark mode tokens (default) */
-  html {
-    --pc-bg:            #0f0f12;
-    --pc-border:        rgba(80, 80, 80, 0.3);
-    --pc-shadow:        0 2px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4);
-    --pc-hover-shadow:  0 0 60px rgba(6,182,212,0.15), 0 24px 64px rgba(0,0,0,0.65), 0 8px 24px rgba(0,0,0,0.5);
-    --pc-hover-border:  rgba(6,182,212,0.18);
-    --pc-title:         #f3f4f6;
-    --pc-body:          #d1d5db;
-    --pc-img-fallback:  #18181b;
-  }
-
-  /* Light mode tokens */
-  html:not(.dark) {
-    --pc-bg:            #ffffff;
-    --pc-border:        #e2e8f0;
-    --pc-shadow:        0 2px 8px rgba(15,23,42,0.07), 0 1px 3px rgba(15,23,42,0.05);
-    --pc-hover-shadow:  0 0 50px rgba(6,182,212,0.12), 0 24px 64px rgba(15,23,42,0.16), 0 8px 24px rgba(15,23,42,0.10);
-    --pc-hover-border:  rgba(6,182,212,0.22);
-    --pc-title:         #0f1113;
-    --pc-body:          #334155;
-    --pc-img-fallback:  #f1f5f9;
-  }
-
   /* Sticky blurred header */
   .site-header {
     @apply fixed top-0 left-0 right-0 z-50;
@@ -261,6 +231,157 @@
 }
 
 /* Keyframes and helper utilities */
+
+/* ============================================================
+   PROJECT CARDS  —  all hover via pure CSS, zero JS lag
+   next-themes adds .dark to <html> for dark mode
+============================================================ */
+
+.pcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(80,80,80,0.28);
+  background: #0f0f12;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.45),
+    0 4px 20px rgba(0,0,0,0.3);
+  /* GPU-composited: only transform & opacity, no layout */
+  transform: translateY(0) translateZ(0);
+  transition:
+    transform 220ms cubic-bezier(0.22,1,0.36,1),
+    box-shadow 220ms cubic-bezier(0.22,1,0.36,1),
+    border-color 220ms ease;
+  will-change: transform, box-shadow;
+}
+
+html:not(.dark) .pcard {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow:
+    0 2px 8px rgba(15,23,42,0.07),
+    0 4px 20px rgba(15,23,42,0.06);
+}
+
+/* HOVER — lift + deep shadow + faint cyan glow, NO outlines */
+.pcard:hover {
+  transform: translateY(-8px) translateZ(0);
+  border-color: rgba(6,182,212,0.15);
+  box-shadow:
+    0 0  40px rgba(6,182,212,0.10),
+    0 8px 30px rgba(0,0,0,0.35),
+    0 20px 60px rgba(0,0,0,0.55);
+}
+
+html:not(.dark) .pcard:hover {
+  border-color: rgba(6,182,212,0.20);
+  box-shadow:
+    0 0  40px rgba(6,182,212,0.08),
+    0 8px 30px rgba(15,23,42,0.10),
+    0 20px 60px rgba(15,23,42,0.14);
+}
+
+/* Image */
+.pcard__img-wrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.pcard__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1) translateZ(0);
+  transition: transform 400ms cubic-bezier(0.22,1,0.36,1);
+  will-change: transform;
+}
+
+.pcard:hover .pcard__img {
+  transform: scale(1.05) translateZ(0);
+}
+
+.pcard__img-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  background: #18181b;
+  padding: 1rem;
+}
+
+html:not(.dark) .pcard__img-fallback {
+  background: #f1f5f9;
+}
+
+.pcard__img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.pcard:hover .pcard__img-overlay {
+  opacity: 1;
+}
+
+/* Body */
+.pcard__body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pcard__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f3f4f6;
+}
+
+html:not(.dark) .pcard__title {
+  color: #0f1113;
+}
+
+.pcard__desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+html:not(.dark) .pcard__desc {
+  color: #334155;
+}
+
+.pcard__achievements {
+  list-style: disc;
+  margin-left: 1rem;
+  font-size: 0.75rem;
+  color: #818cf8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pcard__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.pcard__links {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
 @layer utilities {
   @keyframes borderFlow {
     0% { background-position: 0% 50%; }
