@@ -27,6 +27,11 @@
     color: var(--text-dark);
     /* Offset content for sticky header height */
     padding-top: 72px; /* matches .site-header height */
+    /* Crisp, HD-quality text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
   }
 
   .light body {
